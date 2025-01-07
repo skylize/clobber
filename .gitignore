@@ -1,7 +1,8 @@
 .calva/output-window/
 .calva/repl.calva-repl
 .classpath
-.clj-kondo/.cache
+!.clj-kondo/config.edn
+.clj-kondo/.cache/
 .cpcache
 .eastwood
 .factorypath

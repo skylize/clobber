@@ -1,0 +1,3 @@
+{:linters {:clojure-lsp/unused-public-var {:level :off}}
+ :lint-as { skylize.poj.macro/defalias clojure.core/def
+            skylize.poj.macro/defcurry clj-kondo.lint-as/def-catch-all}}
