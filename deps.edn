@@ -1,8 +1,12 @@
 {:paths ["src" "resources"]
  :deps {org.clojure/clojure {:mvn/version "1.12.0"}
-        io.github.skylize/poj {:local/root "/home/sky/dev/poj"}}
+        io.github.skylize/poj {:git/sha
+                               "0a7d394c5f0c712dd506609eab33376003456862"}}
  :aliases
- {:test
+ {:dev {:extra-deps {io.github.skylize/poj {:local/root "/home/sky/dev/poj"}}
+        :jvm-opts ["-XX:-OmitStackTraceInFastThrow"]}
+
+  :test
   {:extra-paths ["test"]
    :extra-deps {org.clojure/test.check {:mvn/version "1.1.1"}
                 io.github.cognitect-labs/test-runner
