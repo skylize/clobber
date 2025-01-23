@@ -4,9 +4,10 @@
             [skylize.poj.macro :refer [defcurry]]
             :reload-all))
 
-(def universal-char-classes ["[:alnum:]" "[:cntrl:]" "[:lower:]" "[:space:]"
-                             "[:alpha:]" "[:digit:]" "[:print:]" "[:upper:]"
-                             "[:blank:]" "[:graph:]" "[:punct:]" "[:xdigit:]"])
+(def universal-char-classes
+  ["[:alnum:]" "[:cntrl:]" "[:lower:]" "[:space:]"
+   "[:alpha:]" "[:digit:]" "[:print:]" "[:upper:]"
+   "[:blank:]" "[:graph:]" "[:punct:]" "[:xdigit:]"])
 
 
 (def bracket-escape-chars ["\\" "]" "-"])
@@ -42,7 +43,7 @@
    score))
 
 (defcurry escaped-char
-  "Parse any character that has been escaped by a backslash. If `strict` is truth, then fail if the character is not found in the list of `meta-chars`"
+  "Parse any character that has been escaped by a backslash. If `strict` is truthy, then fail if the character is not found in the list of `meta-chars`"
   [{:keys [meta-chars strict]
     :or {meta-chars [] strict false}} state]
   (let [parse (if (:loss state) state
@@ -78,21 +79,19 @@
    (fn [w] {:type :close-bracket :val w})
    (poj/string "]")))
 
-(def bracket-char-str
-  (poj/tossup))
+(def bracket-raw-char
+  (poj/tossup ))
 
 (defcurry escaped-brack-char
-  [{:keys [strict]} score]
+  [score]
   (escaped-char
-   {:strict     strict-escape
+   {:strict     true
     :meta-chars bracket-escape-chars}
    score))
 
 (defn bracket-char
-  [{:keys [strict-escape]} score]
-  (poj/any-of [(escaped-char
-                {:strict     strict-escape
-                 :meta-chars bracket-escape-chars})
+  [score]
+  (poj/any-of [escaped-brack-char
                char-class
                char-equiv
                collating-symb
@@ -100,10 +99,9 @@
               score))
 
 (comment
-  (bracket-char {:strict-escape false :meta-chars bracket-escape-chars}
-                {:pos 3 :source "bcd[:foo:]"})
-  (bracket-char {:strict-escape false :meta-chars bracket-escape-chars}
-                {:pos 2 :source "bcd[:foo:]"})
+  (bracket-char {:pos 3 :source "bcd[:foo:]"})
+  (bracket-char {:pos 2 :source "bcd"})
+  (bracket-char {:pos 2 :source "bc\\d"})
   )
 
 ;; (defn char-range
